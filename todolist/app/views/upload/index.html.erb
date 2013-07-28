@@ -5,8 +5,9 @@
     <title></title>
 </head>
 <body>
-<%= form_for :mytest, :html =>{:multipart => true} do |f| %>
-    <%= f.file_field :myfile %>
+<!-- 文件上传表单 -->
+<%= form_for :upload, :html =>{:multipart => true} do |f| %>
+    <%= f.file_field :file %>
     <%= f.submit "Upload" %>
 <% end %>
 </body>

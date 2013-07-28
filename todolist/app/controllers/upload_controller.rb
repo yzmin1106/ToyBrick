@@ -3,26 +3,21 @@ require "mongo"
 
 class UploadController < ApplicationController
   def upload
-    #require 'fileutils'
-    tmp = params[:mytest][:myfile]
-    #print tmp.class
-    #file = File.join("public", tmp.original_filename)
-    #FileUtils.cp tmp.path, file
-
-    file = File.open(tmp.path, "rb")
+    tmp_file = params[:upload][:file]    #上传文件已经自动存储在"/var/folders/x/y/z/"下面了
+    #puts tmp_file.path
+    file = File.open(tmp_file.path, "rb")
     contents = file.read
     file.close
-    print contents
 
     #contents = "<a><b>123</b></a>"
-    myXML = Crack::XML.parse(contents)
-    myJSON = myXML.to_hash
-    print myJSON
+    xml = Crack::XML.parse(contents)
+    json = xml.to_hash
 
+    #参见initializers/mongo.rb
     connection = Mongo::Connection.new("localhost", 27017)
     db = connection.db("todo")
     coll = db.collection("xmls")
-    coll.save(myJSON)
+    coll.save(json)
     #Mongo shell中的嵌套查询语句 - db.xmls.find({ "breakfast_menu.food.price" : "$4.50" })
 
     #redirect_to index
@@ -32,11 +27,8 @@ class UploadController < ApplicationController
   end
 
   def index
-    @projects = Project.all
-
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @projects }
+      format.html
     end
   end
 end
