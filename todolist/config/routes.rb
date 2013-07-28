@@ -1,6 +1,8 @@
 Todo::Application.routes.draw do
   resources :projects
-
+  #match 'upload' => 'upload#index'
+  get       'upload' => 'upload#index'
+  post      'upload' => 'upload#upload'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
